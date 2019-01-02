@@ -1,0 +1,53 @@
+<html>
+
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+<div id="error-message"></div>
+<input type="text" name="name" id="name" placeholder="Enter your name"/>
+<input type="button" value="Start Chat" onclick="setUserName()" />
+
+    <script>
+    var socket=io();
+    function setUserName(){
+
+
+        socket.emit('setUserName',document.getElementById('name').value);
+    
+    }
+    var user;
+    socket.on('userAlreadyExists',function(data){
+        document.getElementById('error-message').innerHTML=data;
+    })
+
+    socket.on('newUserSet',function(data){
+        user=data.username;
+        document.body.innerHTML='<input type="text" id="message"/>\
+        <input type="button" value="Message" onclick="sendMessage()"/>\
+        <div id="user-message"></div>';
+
+    });
+    function sendMessage(){
+        var msg=document.getElementById('message').value;
+        if(msg){
+            socket.emit('msg',{message:msg,user:user})
+
+
+
+        }
+    }
+    socket.on('NewMessage',function(data){
+
+        if(user){
+            document.getElementById('user-message').innerHTML+='<div>\
+                <b>'+data.user+'</b>: ' +data.message+'</div>';
+
+        }
+    })
+    
+
+  
+    
+    </script>
+    
+</body>
+</html>

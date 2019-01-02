@@ -1,0 +1,21 @@
+<html>
+
+<body>
+    <div id="msg"></div>
+    <div id="test"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    Hello world!
+
+    <script>
+    var socket=io();
+    socket.on('newClientConnected',function(data){
+
+        document.getElementById('msg').innerHTML=data.message;
+    })
+    
+
+  
+    
+    </script>
+</body>
+</html>
